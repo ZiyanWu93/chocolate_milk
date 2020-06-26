@@ -8,14 +8,14 @@ use crate::fuzz_session::{Worker, FuzzSession};
 use lockcell::LockCell;
 
 pub fn fuzz() {
-    //if core!().id != 0 { cpu::halt(); }
+    if core!().id != 0 { cpu::halt(); }
     //if core!().id >= 24 { cpu::halt(); }
 
     static SESSION:
         LockCell<Option<Arc<FuzzSession>>, LockInterrupts> =
         LockCell::new(None);
 
-    // Create the master sessionshot, and fork from it for all cores
+    // Create the master snapshot, and fork from it for all cores
     let session = {
         let mut session = SESSION.lock();
         if session.is_none() {
