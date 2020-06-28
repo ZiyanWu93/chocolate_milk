@@ -16,6 +16,11 @@ fn entry() {
     unsafe {
         core::ptr::write(0xb8000 as *mut u16, 0x0f45);
 
+        /// **************************
+        /// Ziyan:
+        /// write to VGA
+        /// 1 byte is ASCII, 1 byte is color
+        /// **************************
         asm!(r#"
             cli
             hlt
