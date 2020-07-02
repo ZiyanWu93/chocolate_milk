@@ -4,8 +4,13 @@
 name = "chocolate_milk"
 version = "0.1.0"
 dependencies = [
+ "lockcell",
  "pe_parser",
 ]
+
+[[package]]
+name = "lockcell"
+version = "0.1.0"
 
 [[package]]
 name = "pe_parser"
