@@ -8,5 +8,5 @@ edition = "2018"
 
 [dependencies]
 pe_parser = { path = "shared/pe_parser" }
-lockcell = { path= "shared/lockcell"}
-
+serial = { path = "shared/serial" }
+cpu = { path = "shared/cpu" }

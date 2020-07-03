@@ -54,6 +54,10 @@ fn flatten_pe<P: AsRef<Path>>(filename: P) -> Option<(u32, u32, Vec<u8>)> {
         let size:     usize = size.try_into().ok()?;
 
         // Copy the initialized bytes from the PE into the flattened image
+        flattened[flat_off..flat_off.checked_add(to_copy)?]
+            .copy_from_slice(raw);
+
+        // Copy the initialized bytes from the PE into the flattened image
         flattened[flat_off..flat_off.checked_add(size)?]
             .copy_from_slice(raw);
 
