@@ -10,3 +10,4 @@ edition = "2018"
 pe_parser = { path = "shared/pe_parser" }
 serial = { path = "shared/serial" }
 cpu = { path = "shared/cpu" }
+bootloader = { path = "bootloader" }

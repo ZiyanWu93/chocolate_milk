@@ -18,9 +18,9 @@ static SERIAL: LockCell<SerialPort> = LockCell::new(SerialPort {
 
 
 pub fn init() {
+// Go through each possible COM port
     let mut serial= SERIAL.lock();
-    // Go through each possible COM port
-    for (com_id,device) in serial.devices.iter_mut().enumerate() {
+    for (com_id, device) in serial.devices.iter_mut().enumerate() {
         // Get the COM port I/O address from the BIOS data area (BDA)
         let port =
             unsafe { *(0x400 as *const u16).offset(com_id as isize) };
@@ -29,7 +29,7 @@ pub fn init() {
         // the BIOS
         if port == 0 {
             // Serial port is not present
-            *device=None;
+            *device = None;
             continue;
         }
 
@@ -45,6 +45,32 @@ pub fn init() {
 
 
         // Save that we found and initialized a serial port
-        *device=Some(port);
+        *device = Some(port);
+    }
+}
+
+pub fn write(val:u8){
+    // Get access to the serial ports
+    let serial= SERIAL.lock();
+
+    for device in &serial.devices{
+        if let Some(port)= device{
+            unsafe {
+                cpu::out8(*port, val);
+            }
+        }
+    }
+}
+
+pub fn write_bytes(val:u8){
+    // Get access to the serial ports
+    let serial= SERIAL.lock();
+
+    for device in &serial.devices{
+        if let Some(port)= device{
+            unsafe {
+                cpu::out8(*port, val);
+            }
+        }
     }
 }

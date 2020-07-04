@@ -53,12 +53,11 @@ fn flatten_pe<P: AsRef<Path>>(filename: P) -> Option<(u32, u32, Vec<u8>)> {
         let flat_off: usize = (base - image_start).try_into().ok()?;
         let size:     usize = size.try_into().ok()?;
 
-        // Copy the initialized bytes from the PE into the flattened image
-        flattened[flat_off..flat_off.checked_add(to_copy)?]
-            .copy_from_slice(raw);
+        // Compute the number of bytes to initialize
+        let to_copy = std::cmp::min(size, raw.len());
 
         // Copy the initialized bytes from the PE into the flattened image
-        flattened[flat_off..flat_off.checked_add(size)?]
+        flattened[flat_off..flat_off.checked_add(to_copy)?]
             .copy_from_slice(raw);
 
         Some(())
