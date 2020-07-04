@@ -16,7 +16,7 @@ fn panic(_info: &PanicInfo) -> ! {
 #[no_mangle]
 extern fn entry() {
     serial::init();
-    serial::write('a' as u8);
+    serial::write(b"Hello world\n");
     cpu::halt();
 }
 

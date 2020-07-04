@@ -49,17 +49,20 @@ pub fn init() {
     }
 }
 
-pub fn write(val:u8){
+pub fn write(bytes:&[u8]){
     // Get access to the serial ports
     let serial= SERIAL.lock();
 
-    for device in &serial.devices{
-        if let Some(port)= device{
-            unsafe {
-                cpu::out8(*port, val);
+    for &byte in bytes{
+        for device in &serial.devices {
+            if let Some(port) = *device {
+                unsafe {
+                    while (cpu::in8(port+5) & 0x20)==0 {}
+
+                    cpu::out8(port, byte);
+                }
             }
-        }
-    }
+        }}
 }
 
 pub fn write_bytes(val:u8){
