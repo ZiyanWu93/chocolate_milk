@@ -6,6 +6,7 @@ mod core_reqs;
 
 use core::panic::PanicInfo;
 
+use serial::print;
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     loop {}
@@ -16,7 +17,7 @@ fn panic(_info: &PanicInfo) -> ! {
 #[no_mangle]
 extern fn entry() {
     serial::init();
-    serial::write(b"Hello world\n");
+    print!("Welcome to the chocolate milk! {:?}\n", 2);
     cpu::halt();
 }
 
