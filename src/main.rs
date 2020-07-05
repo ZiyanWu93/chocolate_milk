@@ -8,6 +8,9 @@ use pe_parser::PeParser;
 /// Maximum size allowed by PXE
 const MAX_BOOTLOADER_SIZE: u64 = 32 * 1024;
 
+
+const BOOTLOADER_BASE: u32 = 0x7e00;
+
 /// Create a flattened PE image
 /// Returns a tuple (entry point vaddr, base vaddr, image)
 fn flatten_pe<P: AsRef<Path>>(filename: P) -> Option<(u32, u32, Vec<u8>)> {
@@ -132,6 +135,18 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Create the boot file name
     let bootfile = Path::new("build").join("chocolate_milk.boot");
+
+    // Build the assembly routines for the bootloader
+    if !Command::new("nasm")
+        .args(&["-f", "win32",
+            &format!("-DPROGRAM_BASE={:#x}", BOOTLOADER_BASE),
+            Path::new("bootloader").join("src").join("asm_routines.asm")
+                .to_str().unwrap(),
+            "-o", Path::new("build").join("bootloader")
+                .join("asm_routines.obj").to_str().unwrap()
+        ]).status()?.success() {
+        return Err("Failed to build bootloader assembly routines".into());
+    }
 
     // Build the bootloader
     let bootloader_build_dir =

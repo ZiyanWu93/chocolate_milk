@@ -3,10 +3,11 @@
 #![no_main]
 
 mod core_reqs;
-
+mod realmode;
 use core::panic::PanicInfo;
 
 use serial::print;
+use crate::realmode::{invoke_realmode,RegisterState};
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -30,13 +31,20 @@ fn panic(info: &PanicInfo) -> ! {
 #[no_mangle]
 extern fn entry() {
     serial::init();
-    let mem= [0u8;10];
-    let mem= [0u8;10];
-    print!("{:?}\n",mem[0]);
-    print!("{:?}\n",mem[..][0]);
-    print!("{:?}\n",mem[..][50]);
+    // let mem= [0u8;10];
+    // let mem= [0u8;10];
+    // print!("{:?}\n",mem[0]);
+    // print!("{:?}\n",mem[..][0]);
+    // print!("{:?}\n",mem[..][50]);
     // let val=5;
     // print!("Welcome to the chocolate milk! {:p}\n", &val);
+    unsafe{
+        invoke_realmode(0x10,  &RegisterState{
+            eax: 0x0003,
+            ..Default::default()
+
+        })
+    }
     cpu::halt();
 }
 
