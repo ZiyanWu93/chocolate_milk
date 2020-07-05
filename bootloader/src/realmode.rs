@@ -19,7 +19,7 @@ pub struct RegisterState {
 }
 
 extern {
-    pub fn invoke_realmode(int_number: u8, regs: *const RegisterState);
+    pub fn invoke_realmode(int_number: u8, regs: *mut RegisterState);
     pub fn pxecall(seg: u16, off: u16, pxe_call: u16,
                    param_seg: u16, param_off: u16);
 }

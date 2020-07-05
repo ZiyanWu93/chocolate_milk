@@ -40,8 +40,8 @@ pm_entry:
     ; Set up a basic stack
     mov esp, 0x7c00
 
-    ; Jump into Rust (entry_point is a defined variable during build)
-    jmp entry_point
+    ; Jump into Rust! (entry_point is a defined variable during build)
+    call entry_point
 
 
 
