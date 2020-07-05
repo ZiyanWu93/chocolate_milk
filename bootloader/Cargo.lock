@@ -5,6 +5,7 @@ name = "bootloader"
 version = "0.1.0"
 dependencies = [
  "cpu",
+ "rangeset",
  "serial",
 ]
 
@@ -14,6 +15,10 @@ version = "0.1.0"
 
 [[package]]
 name = "lockcell"
+version = "0.1.0"
+
+[[package]]
+name = "rangeset"
 version = "0.1.0"
 
 [[package]]

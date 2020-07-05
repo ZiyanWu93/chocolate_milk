@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 serial = { path = "../shared/serial" }
 cpu = { path = "../shared/cpu" }
+rangeset = { path= "../shared/rangeset"}
 
 [profile.release]
 panic = "abort"

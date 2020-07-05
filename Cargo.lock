@@ -5,6 +5,7 @@ name = "bootloader"
 version = "0.1.0"
 dependencies = [
  "cpu",
+ "rangeset",
  "serial",
 ]
 
@@ -15,6 +16,7 @@ dependencies = [
  "bootloader",
  "cpu",
  "pe_parser",
+ "rangeset",
  "serial",
 ]
 
@@ -28,6 +30,10 @@ version = "0.1.0"
 
 [[package]]
 name = "pe_parser"
+version = "0.1.0"
+
+[[package]]
+name = "rangeset"
 version = "0.1.0"
 
 [[package]]
