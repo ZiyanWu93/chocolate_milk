@@ -1,3 +1,5 @@
+//! Build script for the chocolate milk bootloader and OS
+
 use std::path::Path;
 use std::error::Error;
 use std::convert::TryInto;
@@ -5,11 +7,11 @@ use std::process::Command;
 
 use pe_parser::PeParser;
 
+/// Base address for the Rust bootloader
+const BOOTLOADER_BASE: u32 = 0x7e00;
+
 /// Maximum size allowed by PXE
 const MAX_BOOTLOADER_SIZE: u64 = 32 * 1024;
-
-
-const BOOTLOADER_BASE: u32 = 0x7e00;
 
 /// Create a flattened PE image
 /// Returns a tuple (entry point vaddr, base vaddr, image)
@@ -138,13 +140,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Build the assembly routines for the bootloader
     if !Command::new("nasm")
-        .args(&["-f", "win32",
-            &format!("-DPROGRAM_BASE={:#x}", BOOTLOADER_BASE),
-            Path::new("bootloader").join("src").join("asm_routines.asm")
+            .args(&["-f", "win32",
+                &format!("-DPROGRAM_BASE={:#x}", BOOTLOADER_BASE),
+                Path::new("bootloader").join("src").join("asm_routines.asm")
                 .to_str().unwrap(),
-            "-o", Path::new("build").join("bootloader")
+                "-o", Path::new("build").join("bootloader")
                 .join("asm_routines.obj").to_str().unwrap()
-        ]).status()?.success() {
+            ]).status()?.success() {
         return Err("Failed to build bootloader assembly routines".into());
     }
 
@@ -167,8 +169,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .ok_or("Failed to flatten bootloader PE image")?;
 
     // Make sure the PE gets loaded to where we expect
-    if base != 0x7e00 {
-        return Err("Base address for bootloader did not match 0x7e00".into());
+    if base != BOOTLOADER_BASE {
+        return
+            Err("Base address for bootloader did not match expected".into());
     }
 
     // Write out the flattened bootloader image
@@ -195,6 +198,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Deploy the images to the PXE directory
     std::fs::create_dir_all("pxe")?;
     std::fs::copy(bootfile, Path::new("pxe").join("chocolate_milk.boot"))?;
+
     Ok(())
 }
 

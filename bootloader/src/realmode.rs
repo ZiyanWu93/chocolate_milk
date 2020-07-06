@@ -23,3 +23,4 @@ extern {
     pub fn pxecall(seg: u16, off: u16, pxe_call: u16,
                    param_seg: u16, param_off: u16);
 }
+

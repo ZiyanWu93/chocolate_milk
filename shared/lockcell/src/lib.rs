@@ -13,7 +13,7 @@ pub struct LockCell<T: ?Sized> {
 
     /// Current ticket value which can be released
     release: AtomicUsize,
-
+    
     /// Value which is guarded by locks
     val: UnsafeCell<T>,
 }
@@ -115,3 +115,5 @@ mod test {
         let _lk  = _var.lock();
     }
 }
+
+

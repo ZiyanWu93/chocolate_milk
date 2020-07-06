@@ -101,3 +101,4 @@ macro_rules! print {
             &mut $crate::SerialWriter, format_args!($($arg)*));
     }
 }
+

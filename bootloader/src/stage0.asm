@@ -43,8 +43,6 @@ pm_entry:
     ; Jump into Rust! (entry_point is a defined variable during build)
     call entry_point
 
-
-
 ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ; 32-bit protected mode GDT
